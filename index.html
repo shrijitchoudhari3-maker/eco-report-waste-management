@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>EcoReport – Waste Management System</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+</head>
+<body>
+
+<!-- ===== AUTH SCREEN ===== -->
+<div id="authScreen" class="screen active">
+  <div class="auth-bg">
+    <div class="auth-blob b1"></div>
+    <div class="auth-blob b2"></div>
+    <div class="auth-blob b3"></div>
+  </div>
+
+  <div class="auth-container">
+    <!-- Left Panel -->
+    <div class="auth-left">
+      <div class="brand-mark">
+        <div class="brand-icon"><i class="fas fa-leaf"></i></div>
+        <span class="brand-name">EcoReport</span>
+      </div>
+      <h1 class="auth-headline">A Cleaner <br/><em>Tomorrow</em><br/>Starts Now.</h1>
+      <p class="auth-sub">Report waste, track collection, earn eco-points and help build a sustainable community.</p>
+      <div class="auth-stats">
+        <div class="stat"><span class="stat-num">1.2K+</span><span class="stat-label">Reports Filed</span></div>
+        <div class="stat"><span class="stat-num">480+</span><span class="stat-label">Tons Recycled</span></div>
+        <div class="stat"><span class="stat-num">3.8K+</span><span class="stat-label">Eco Points Earned</span></div>
+      </div>
+    </div>
+
+    <!-- Right Panel: Login / Register tabs -->
+    <div class="auth-right">
+      <div class="auth-tabs">
+        <button class="auth-tab active" id="loginTab" onclick="switchTab('login')">Login</button>
+        <button class="auth-tab" id="registerTab" onclick="switchTab('register')">Register</button>
+      </div>
+
+      <!-- Login Form -->
+      <form id="loginForm" class="auth-form" onsubmit="handleLogin(event)">
+        <div class="field-group">
+          <label>Email Address</label>
+          <div class="input-wrap"><i class="fas fa-envelope"></i><input type="email" id="loginEmail" placeholder="you@example.com" required/></div>
+        </div>
+        <div class="field-group">
+          <label>Password</label>
+          <div class="input-wrap"><i class="fas fa-lock"></i><input type="password" id="loginPassword" placeholder="••••••••" required/></div>
+        </div>
+        <div class="field-group remember-row">
+          <label class="check-label"><input type="checkbox" id="adminLogin"/> Login as Admin</label>
+        </div>
+        <button type="submit" class="btn-primary full-width">Login <i class="fas fa-arrow-right"></i></button>
+        <p class="auth-hint">Demo: user@eco.com / pass123 &nbsp;|&nbsp; admin@eco.com / admin123</p>
+      </form>
+
+      <!-- Register Form -->
+      <form id="registerForm" class="auth-form hidden" onsubmit="handleRegister(event)">
+        <div class="field-group">
+          <label>Full Name</label>
+          <div class="input-wrap"><i class="fas fa-user"></i><input type="text" id="regName" placeholder="Your full name" required/></div>
+        </div>
+        <div class="field-group">
+          <label>Email Address</label>
+          <div class="input-wrap"><i class="fas fa-envelope"></i><input type="email" id="regEmail" placeholder="you@example.com" required/></div>
+        </div>
+        <div class="field-group">
+          <label>Phone Number</label>
+          <div class="input-wrap"><i class="fas fa-phone"></i><input type="tel" id="regPhone" placeholder="+91 9876543210" required/></div>
+        </div>
+        <div class="field-group">
+          <label>Password</label>
+          <div class="input-wrap"><i class="fas fa-lock"></i><input type="password" id="regPassword" placeholder="Min 6 characters" required/></div>
+        </div>
+        <button type="submit" class="btn-primary full-width">Create Account <i class="fas fa-arrow-right"></i></button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- ===== USER DASHBOARD ===== -->
+<div id="userDashboard" class="screen">
+
+  <!-- Sidebar -->
+  <nav class="sidebar" id="sidebar">
+    <div class="sidebar-brand">
+      <div class="brand-icon sm"><i class="fas fa-leaf"></i></div>
+      <span>EcoReport</span>
+    </div>
+    <ul class="nav-links">
+      <li><a href="#" class="nav-link active" onclick="showSection('dashHome')"><i class="fas fa-home"></i><span>Dashboard</span></a></li>
+      <li><a href="#" class="nav-link" onclick="showSection('reportWaste')"><i class="fas fa-exclamation-triangle"></i><span>Report Waste</span></a></li>
+      <li><a href="#" class="nav-link" onclick="showSection('myReports')"><i class="fas fa-list-check"></i><span>My Reports</span></a></li>
+      <li><a href="#" class="nav-link" onclick="showSection('ecoPoints')"><i class="fas fa-star"></i><span>Eco Points</span></a></li>
+      <li><a href="#" class="nav-link" onclick="showSection('awareness')"><i class="fas fa-book-open"></i><span>Awareness</span></a></li>
+      <li><a href="#" class="nav-link" onclick="showSection('contact')"><i class="fas fa-headset"></i><span>Contact</span></a></li>
+      <li><a href="#" class="nav-link" onclick="showSection('about')"><i class="fas fa-circle-info"></i><span>About</span></a></li>
+    </ul>
+    <button class="logout-btn" onclick="logout()"><i class="fas fa-sign-out-alt"></i><span>Logout</span></button>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="main-content">
+
+    <!-- Top Bar -->
+    <header class="topbar">
+      <button class="menu-toggle" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button>
+      <div class="topbar-right">
+        <div class="eco-badge"><i class="fas fa-star"></i><span id="headerPoints">0</span> pts</div>
+        <div class="user-avatar" id="userAvatar">U</div>
+      </div>
+    </header>
+
+    <!-- SECTION: Dashboard Home -->
+    <section id="dashHome" class="dash-section active">
+      <div class="section-header">
+        <h2 class="welcome-msg">Good day, <span id="userName">User</span> 👋</h2>
+        <p class="section-sub">Here's an overview of your waste reporting activity</p>
+      </div>
+
+      <!-- Stats Row -->
+      <div class="stats-grid">
+        <div class="stat-card green"><div class="stat-icon"><i class="fas fa-file-alt"></i></div><div><p class="sc-num" id="totalReports">0</p><p class="sc-label">Total Reports</p></div></div>
+        <div class="stat-card blue"><div class="stat-icon"><i class="fas fa-clock"></i></div><div><p class="sc-num" id="pendingReports">0</p><p class="sc-label">Pending</p></div></div>
+        <div class="stat-card earth"><div class="stat-icon"><i class="fas fa-recycle"></i></div><div><p class="sc-num" id="resolvedReports">0</p><p class="sc-label">Resolved</p></div></div>
+        <div class="stat-card gold"><div class="stat-icon"><i class="fas fa-star"></i></div><div><p class="sc-num" id="userPoints">0</p><p class="sc-label">Eco Points</p></div></div>
+      </div>
+
+      <!-- Location Card -->
+      <div class="card location-card">
+        <div class="card-header-row">
+          <h3><i class="fas fa-map-marker-alt"></i> Your Location</h3>
+          <button class="btn-outline sm" onclick="getGPSLocation()"><i class="fas fa-crosshairs"></i> Auto-Detect</button>
+        </div>
+        <div class="location-display">
+          <div id="locationStatus" class="loc-status idle">
+            <i class="fas fa-location-dot"></i>
+            <span id="locationText">Location not detected yet</span>
+          </div>
+          <div class="manual-location">
+            <input type="text" id="manualLocation" placeholder="Or type your address manually…" />
+            <button class="btn-primary sm" onclick="setManualLocation()">Set</button>
+          </div>
+        </div>
+        <!-- Map Placeholder -->
+        <div class="map-placeholder" id="mapPlaceholder">
+          <i class="fas fa-map"></i>
+          <p>Map will appear after location is detected</p>
+          <div class="map-grid"></div>
+        </div>
+        <div id="mapIframe" class="map-iframe-wrap hidden"></div>
+      </div>
+
+      <!-- Quick Report CTA -->
+      <div class="quick-report-cta">
+        <div class="cta-text">
+          <h3>Spotted waste nearby?</h3>
+          <p>Report it in under 2 minutes and earn Eco Points!</p>
+        </div>
+        <button class="btn-primary" onclick="showSection('reportWaste')">Report Now <i class="fas fa-arrow-right"></i></button>
+      </div>
+
+      <!-- Recent Reports -->
+      <div class="card">
+        <div class="card-header-row">
+          <h3>Recent Reports</h3>
+          <a href="#" onclick="showSection('myReports')" class="see-all">See all</a>
+        </div>
+        <div id="recentReportsList" class="report-list"></div>
+      </div>
+    </section>
+
+    <!-- SECTION: Report Waste Form -->
+    <section id="reportWaste" class="dash-section">
+      <div class="section-header">
+        <h2>Report Waste <span class="badge-pill">+50 pts</span></h2>
+        <p class="section-sub">Fill in the details and submit. Our team will handle the rest.</p>
+      </div>
+
+      <!-- Emergency Alert -->
+      <div class="emergency-banner" id="emergencyBanner" onclick="toggleEmergency()">
+        <i class="fas fa-radiation"></i>
+        <span>Is this <strong>Hazardous / Emergency</strong> waste? Click here to send an urgent alert!</span>
+        <i class="fas fa-chevron-right"></i>
+      </div>
+
+      <form class="report-form card" onsubmit="submitReport(event)">
+        <!-- Waste Type -->
+        <div class="field-group">
+          <label class="field-label">Waste Type <span class="req">*</span></label>
+          <div class="waste-type-grid">
+            <label class="waste-chip"><input type="radio" name="wasteType" value="Biodegradable" required/><span><i class="fas fa-seedling"></i>Biodegradable</span></label>
+            <label class="waste-chip"><input type="radio" name="wasteType" value="Recyclable"/><span><i class="fas fa-recycle"></i>Recyclable</span></label>
+            <label class="waste-chip"><input type="radio" name="wasteType" value="Hazardous"/><span><i class="fas fa-skull-crossbones"></i>Hazardous</span></label>
+            <label class="waste-chip"><input type="radio" name="wasteType" value="E-Waste"/><span><i class="fas fa-microchip"></i>E-Waste</span></label>
+            <label class="waste-chip"><input type="radio" name="wasteType" value="Mixed"/><span><i class="fas fa-layer-group"></i>Mixed</span></label>
+          </div>
+        </div>
+
+        <!-- Quantity -->
+        <div class="field-group">
+          <label class="field-label">Estimated Quantity <span class="req">*</span></label>
+          <div class="qty-grid">
+            <label class="qty-chip"><input type="radio" name="quantity" value="Small" required/><span><i class="fas fa-box-open"></i> Small<small>< 5 kg</small></span></label>
+            <label class="qty-chip"><input type="radio" name="quantity" value="Medium"/><span><i class="fas fa-boxes-stacked"></i> Medium<small>5–20 kg</small></span></label>
+            <label class="qty-chip"><input type="radio" name="quantity" value="Large"/><span><i class="fas fa-truck-loading"></i> Large<small>> 20 kg</small></span></label>
+          </div>
+        </div>
+
+        <!-- Location in form -->
+        <div class="field-group">
+          <label class="field-label">Location <span class="req">*</span></label>
+          <div class="input-wrap">
+            <i class="fas fa-map-marker-alt"></i>
+            <input type="text" id="reportLocation" placeholder="Address or coordinates" required/>
+          </div>
+          <button type="button" class="btn-outline sm mt-6" onclick="getGPSLocation(true)"><i class="fas fa-crosshairs"></i> Use Current Location</button>
+        </div>
+
+        <!-- Description -->
+        <div class="field-group">
+          <label class="field-label">Description</label>
+          <textarea id="reportDesc" rows="3" placeholder="Describe the waste situation briefly…"></textarea>
+        </div>
+
+        <!-- Photo Upload -->
+        <div class="field-group">
+          <label class="field-label">Photo Evidence</label>
+          <div class="photo-upload-area" id="photoArea" onclick="document.getElementById('photoInput').click()">
+            <i class="fas fa-cloud-upload-alt"></i>
+            <p>Click to upload or drag & drop</p>
+            <small>PNG, JPG, WEBP accepted</small>
+          </div>
+          <input type="file" id="photoInput" accept="image/*" hidden onchange="handlePhotoUpload(event)"/>
+          <button type="button" class="btn-outline sm mt-6" onclick="openCamera()"><i class="fas fa-camera"></i> Capture via Camera</button>
+          <div id="imagePreviewWrap" class="hidden">
+            <img id="imagePreview" src="" alt="Preview"/>
+            <button type="button" class="remove-img" onclick="removePhoto()"><i class="fas fa-times"></i></button>
+          </div>
+          <!-- Camera Stream -->
+          <div id="cameraSection" class="hidden camera-section">
+            <video id="cameraStream" autoplay playsinline></video>
+            <div class="camera-controls">
+              <button type="button" class="btn-primary" onclick="capturePhoto()"><i class="fas fa-circle"></i> Capture</button>
+              <button type="button" class="btn-outline" onclick="closeCamera()">Cancel</button>
+            </div>
+            <canvas id="cameraCanvas" hidden></canvas>
+          </div>
+        </div>
+
+        <button type="submit" class="btn-primary full-width lg-btn">
+          <i class="fas fa-paper-plane"></i> Submit Report
+        </button>
+      </form>
+    </section>
+
+    <!-- SECTION: My Reports -->
+    <section id="myReports" class="dash-section">
+      <div class="section-header">
+        <h2>My Reports</h2>
+        <p class="section-sub">Track the status of all your submitted waste reports</p>
+      </div>
+      <div class="filter-bar">
+        <button class="filter-btn active" onclick="filterReports('all', this)">All</button>
+        <button class="filter-btn" onclick="filterReports('Pending', this)">Pending</button>
+        <button class="filter-btn" onclick="filterReports('Assigned', this)">Assigned</button>
+        <button class="filter-btn" onclick="filterReports('Picked Up', this)">Picked Up</button>
+        <button class="filter-btn" onclick="filterReports('Recycled', this)">Recycled</button>
+      </div>
+      <div id="allReportsList" class="reports-grid"></div>
+    </section>
+
+    <!-- SECTION: Eco Points -->
+    <section id="ecoPoints" class="dash-section">
+      <div class="section-header">
+        <h2>Eco Points</h2>
+        <p class="section-sub">Your contribution to a greener planet, rewarded</p>
+      </div>
+      <div class="points-hero card">
+        <div class="points-circle">
+          <i class="fas fa-star"></i>
+          <span id="bigPoints">0</span>
+          <small>Eco Points</small>
+        </div>
+        <div class="points-tier" id="pointsTier">🌱 Seedling</div>
+        <p>Keep reporting to climb the leaderboard!</p>
+      </div>
+      <div class="rewards-grid">
+        <div class="reward-card"><div class="rw-icon">🌳</div><h4>Plant a Tree</h4><p>Redeem 200 pts to sponsor a tree plantation.</p><button class="btn-outline sm">200 pts – Redeem</button></div>
+        <div class="reward-card"><div class="rw-icon">🎟️</div><h4>Event Pass</h4><p>Get free entry to eco-awareness events.</p><button class="btn-outline sm">150 pts – Redeem</button></div>
+        <div class="reward-card"><div class="rw-icon">🏅</div><h4>Eco Champion Badge</h4><p>Digital badge for your profile.</p><button class="btn-outline sm">100 pts – Redeem</button></div>
+        <div class="reward-card"><div class="rw-icon">🛍️</div><h4>Green Market Voucher</h4><p>Discount at partner eco-stores.</p><button class="btn-outline sm">300 pts – Redeem</button></div>
+      </div>
+      <div class="how-points card">
+        <h3>How to Earn Points</h3>
+        <ul class="points-list">
+          <li><i class="fas fa-check-circle"></i> Submit a waste report → <strong>+50 pts</strong></li>
+          <li><i class="fas fa-check-circle"></i> Report with photo → <strong>+20 bonus pts</strong></li>
+          <li><i class="fas fa-check-circle"></i> Hazardous waste alert → <strong>+30 pts</strong></li>
+          <li><i class="fas fa-check-circle"></i> Report verified & collected → <strong>+50 pts</strong></li>
+          <li><i class="fas fa-check-circle"></i> Refer a friend → <strong>+25 pts</strong></li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- SECTION: Awareness -->
+    <section id="awareness" class="dash-section">
+      <div class="section-header">
+        <h2>Waste Awareness</h2>
+        <p class="section-sub">Learn how to segregate and manage waste responsibly</p>
+      </div>
+      <div class="awareness-grid">
+        <div class="awareness-card bio"><div class="aw-icon">🌿</div><h3>Biodegradable</h3><p>Food scraps, garden waste, paper. Decomposes naturally. Compost it!</p><ul><li>Vegetable peels</li><li>Fruit waste</li><li>Dry leaves</li><li>Tea bags</li></ul></div>
+        <div class="awareness-card recycle"><div class="aw-icon">♻️</div><h3>Recyclable</h3><p>Plastics, glass, metals. Can be reprocessed into new products.</p><ul><li>Plastic bottles</li><li>Glass jars</li><li>Newspapers</li><li>Cardboard</li></ul></div>
+        <div class="awareness-card hazard"><div class="aw-icon">☠️</div><h3>Hazardous</h3><p>Dangerous to health and environment. Requires special disposal.</p><ul><li>Batteries</li><li>Paints & solvents</li><li>Chemicals</li><li>Medical waste</li></ul></div>
+        <div class="awareness-card ewaste"><div class="aw-icon">💻</div><h3>E-Waste</h3><p>Electronic devices and components with toxic materials inside.</p><ul><li>Old phones</li><li>Laptops & TVs</li><li>Wires & cables</li><li>Batteries</li></ul></div>
+      </div>
+      <div class="tips-section card">
+        <h3>🌍 Top 10 Waste Reduction Tips</h3>
+        <div class="tips-list">
+          <div class="tip-item"><span class="tip-num">01</span><p>Carry reusable bags and avoid single-use plastics</p></div>
+          <div class="tip-item"><span class="tip-num">02</span><p>Compost kitchen waste at home using a bin</p></div>
+          <div class="tip-item"><span class="tip-num">03</span><p>Segregate waste at source – don't mix categories</p></div>
+          <div class="tip-item"><span class="tip-num">04</span><p>Buy products with minimal or recyclable packaging</p></div>
+          <div class="tip-item"><span class="tip-num">05</span><p>Donate or repair items instead of discarding them</p></div>
+          <div class="tip-item"><span class="tip-num">06</span><p>Use both sides of paper before recycling</p></div>
+          <div class="tip-item"><span class="tip-num">07</span><p>Never burn or bury hazardous waste</p></div>
+          <div class="tip-item"><span class="tip-num">08</span><p>Return e-waste to authorized collection centers</p></div>
+          <div class="tip-item"><span class="tip-num">09</span><p>Encourage neighbors and society to report waste</p></div>
+          <div class="tip-item"><span class="tip-num">10</span><p>Participate in local clean-up drives regularly</p></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION: Contact -->
+    <section id="contact" class="dash-section">
+      <div class="section-header">
+        <h2>Contact & Help</h2>
+        <p class="section-sub">Reach out to our support team anytime</p>
+      </div>
+      <div class="contact-grid">
+        <div class="contact-info card">
+          <h3>Get in Touch</h3>
+          <div class="contact-item"><i class="fas fa-envelope"></i><div><strong>Email</strong><p>support@ecoreport.in</p></div></div>
+          <div class="contact-item"><i class="fas fa-phone"></i><div><strong>Helpline</strong><p>1800-ECO-HELP (Toll Free)</p></div></div>
+          <div class="contact-item"><i class="fas fa-map-marker-alt"></i><div><strong>Office</strong><p>Green Tech Hub, Pune, Maharashtra</p></div></div>
+          <div class="contact-item"><i class="fas fa-clock"></i><div><strong>Working Hours</strong><p>Mon–Sat: 8 AM – 6 PM</p></div></div>
+        </div>
+        <form class="contact-form card" onsubmit="submitContact(event)">
+          <h3>Send a Message</h3>
+          <div class="field-group"><label>Name</label><div class="input-wrap"><i class="fas fa-user"></i><input type="text" placeholder="Your name" required/></div></div>
+          <div class="field-group"><label>Email</label><div class="input-wrap"><i class="fas fa-envelope"></i><input type="email" placeholder="Email" required/></div></div>
+          <div class="field-group"><label>Message</label><textarea rows="4" placeholder="Your message…" required></textarea></div>
+          <button type="submit" class="btn-primary full-width">Send Message <i class="fas fa-paper-plane"></i></button>
+        </form>
+      </div>
+    </section>
+
+    <!-- SECTION: About -->
+    <section id="about" class="dash-section">
+      <div class="section-header">
+        <h2>About EcoReport</h2>
+        <p class="section-sub">A student PBL project for a sustainable future</p>
+      </div>
+      <div class="about-hero card">
+        <div class="about-icon"><i class="fas fa-earth-asia"></i></div>
+        <h3>Our Mission</h3>
+        <p>EcoReport is a community-driven waste management platform built to make waste reporting easy, transparent, and rewarding. We connect citizens with waste collection teams and promote responsible disposal practices.</p>
+      </div>
+      <div class="team-section">
+        <h3>How It Works</h3>
+        <div class="how-grid">
+          <div class="how-step"><div class="step-num">1</div><i class="fas fa-user-plus"></i><h4>Register</h4><p>Sign up and create your profile</p></div>
+          <div class="how-step"><div class="step-num">2</div><i class="fas fa-camera"></i><h4>Report</h4><p>Upload waste photo and location</p></div>
+          <div class="how-step"><div class="step-num">3</div><i class="fas fa-truck"></i><h4>Collect</h4><p>Our team picks up the waste</p></div>
+          <div class="how-step"><div class="step-num">4</div><i class="fas fa-recycle"></i><h4>Recycle</h4><p>Waste is sorted and processed</p></div>
+          <div class="how-step"><div class="step-num">5</div><i class="fas fa-star"></i><h4>Reward</h4><p>Earn eco points for reporting</p></div>
+        </div>
+      </div>
+      <div class="tech-stack card">
+        <h3>Tech Stack</h3>
+        <div class="tech-tags">
+          <span>HTML5</span><span>CSS3</span><span>JavaScript</span><span>LocalStorage</span><span>Geolocation API</span><span>Camera API</span><span>Node.js (Backend-Ready)</span><span>MongoDB (Backend-Ready)</span>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<!-- ===== ADMIN DASHBOARD ===== -->
+<div id="adminDashboard" class="screen">
+  <nav class="sidebar admin-sidebar">
+    <div class="sidebar-brand">
+      <div class="brand-icon sm admin-brand-icon"><i class="fas fa-shield-halved"></i></div>
+      <span>Admin Panel</span>
+    </div>
+    <ul class="nav-links">
+      <li><a href="#" class="nav-link active" onclick="showAdminSection('adminHome')"><i class="fas fa-chart-line"></i><span>Overview</span></a></li>
+      <li><a href="#" class="nav-link" onclick="showAdminSection('adminReports')"><i class="fas fa-file-alt"></i><span>All Reports</span></a></li>
+      <li><a href="#" class="nav-link" onclick="showAdminSection('adminUsers')"><i class="fas fa-users"></i><span>Users</span></a></li>
+    </ul>
+    <button class="logout-btn" onclick="logout()"><i class="fas fa-sign-out-alt"></i><span>Logout</span></button>
+  </nav>
+
+  <main class="main-content">
+    <header class="topbar">
+      <button class="menu-toggle" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button>
+      <div class="topbar-right">
+        <div class="admin-badge"><i class="fas fa-shield-halved"></i> Admin</div>
+      </div>
+    </header>
+
+    <!-- Admin: Overview -->
+    <section id="adminHome" class="dash-section active">
+      <div class="section-header">
+        <h2>Admin Overview</h2>
+        <p class="section-sub">Manage all waste reports and users from here</p>
+      </div>
+      <div class="stats-grid">
+        <div class="stat-card green"><div class="stat-icon"><i class="fas fa-file-alt"></i></div><div><p class="sc-num" id="adTotalReports">0</p><p class="sc-label">Total Reports</p></div></div>
+        <div class="stat-card blue"><div class="stat-icon"><i class="fas fa-clock"></i></div><div><p class="sc-num" id="adPending">0</p><p class="sc-label">Pending</p></div></div>
+        <div class="stat-card earth"><div class="stat-icon"><i class="fas fa-truck"></i></div><div><p class="sc-num" id="adAssigned">0</p><p class="sc-label">Assigned</p></div></div>
+        <div class="stat-card gold"><div class="stat-icon"><i class="fas fa-recycle"></i></div><div><p class="sc-num" id="adResolved">0</p><p class="sc-label">Resolved</p></div></div>
+      </div>
+      <div class="card">
+        <h3>Quick Actions</h3>
+        <div class="quick-actions">
+          <button class="btn-outline" onclick="showAdminSection('adminReports')"><i class="fas fa-file-alt"></i> View Reports</button>
+          <button class="btn-outline" onclick="showAdminSection('adminUsers')"><i class="fas fa-users"></i> View Users</button>
+          <button class="btn-primary" onclick="exportReports()"><i class="fas fa-download"></i> Export Data</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Admin: All Reports -->
+    <section id="adminReports" class="dash-section">
+      <div class="section-header">
+        <h2>All Reports</h2>
+        <p class="section-sub">View and update status of all submitted reports</p>
+      </div>
+      <div id="adminReportsList" class="admin-table-wrap"></div>
+    </section>
+
+    <!-- Admin: Users -->
+    <section id="adminUsers" class="dash-section">
+      <div class="section-header">
+        <h2>Registered Users</h2>
+        <p class="section-sub">View all registered users and their activities</p>
+      </div>
+      <div id="adminUsersList" class="admin-table-wrap"></div>
+    </section>
+
+  </main>
+</div>
+
+<!-- ===== CHATBOT ===== -->
+<div class="chatbot-fab" id="chatFab" onclick="toggleChat()">
+  <i class="fas fa-robot"></i>
+  <div class="chat-pulse"></div>
+</div>
+<div class="chatbot-window" id="chatWindow">
+  <div class="chat-header">
+    <div class="chat-avatar"><i class="fas fa-robot"></i></div>
+    <div><strong>EcoBot</strong><small>Waste Management Assistant</small></div>
+    <button onclick="toggleChat()" class="chat-close"><i class="fas fa-times"></i></button>
+  </div>
+  <div class="chat-messages" id="chatMessages">
+    <div class="msg bot">
+      <div class="msg-bubble">👋 Hi! I'm EcoBot. Ask me anything about waste management!</div>
+    </div>
+    <div class="chat-suggestions">
+      <button onclick="askBot('How to report waste?')">How to report waste?</button>
+      <button onclick="askBot('What is biodegradable waste?')">Biodegradable waste?</button>
+      <button onclick="askBot('How to earn eco-points?')">Earn eco-points?</button>
+      <button onclick="askBot('When will waste be collected?')">Collection time?</button>
+    </div>
+  </div>
+  <div class="chat-input-row">
+    <input type="text" id="chatInput" placeholder="Type your question…" onkeydown="if(event.key==='Enter') sendChatMsg()"/>
+    <button onclick="sendChatMsg()"><i class="fas fa-paper-plane"></i></button>
+  </div>
+</div>
+
+<!-- ===== TOAST ===== -->
+<div class="toast" id="toast"></div>
+
+<!-- ===== MODAL ===== -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeModal()">
+  <div class="modal-box" onclick="event.stopPropagation()">
+    <button class="modal-close" onclick="closeModal()"><i class="fas fa-times"></i></button>
+    <div id="modalContent"></div>
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
